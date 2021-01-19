@@ -441,32 +441,25 @@ import Noty from '../models/noty';
 
    $scope.itemBgStyles = function (item, entity) {
       var obj = entity.attributes || entity;
-
       if(!obj.bgStyles) {
          var bg, styles = {};
-
          if('bgOpacity' in item) {
             styles.opacity = parseFieldValue(item.bgOpacity, item, entity);
          }
-		 var state = parseFieldValue(entity.state, item, entity);
+	 var state = parseFieldValue(entity.state, item, entity);
          if(item.bg) {
-			bg = parseFieldValue(item.bg, item, entity);
-			if(item.bgoff && state === 'off'){
-				bg = parseFieldValue(item.bgoff, item, entity);;
-			}
-            
-
+	    bg = parseFieldValue(item.bg, item, entity);
+	    if(item.bgoff && state === 'off'){
+	       bg = parseFieldValue(item.bgoff, item, entity);
+	    }
             if(bg) styles.backgroundImage = 'url(' + bg + ')';
          }
          else if(item.bgSuffix) {
             bg = parseFieldValue(item.bgSuffix, item, entity);
-
             if(bg) styles.backgroundImage = 'url("' + toAbsoluteServerURL(bg) + '")';
          }
-
          obj.bgStyles = styles;
       }
-
       return obj.bgStyles;
    };
 
