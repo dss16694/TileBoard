@@ -6,7 +6,6 @@ import { TYPES, FEATURES, HEADER_ITEMS, MENU_POSITIONS, GROUP_ALIGNS, TRANSITION
 import { debounce, leadZero, supportsFeature, toAbsoluteServerURL } from '../globals/utils';
 import Noty from '../models/noty';
 
-App.controller('Main', function ($scope, $timeout, $location, Api) {
    if (!window.CONFIG) {
       return;
    }
@@ -441,15 +440,34 @@ App.controller('Main', function ($scope, $timeout, $location, Api) {
    };
 
    $scope.itemBgStyles = function (item, entity) {
-      const bg = getItemFieldValue('bg', item, entity);
-      const bgSuffix = getItemFieldValue('bgSuffix', item, entity);
-      const opacity = getItemFieldValue('bgOpacity', item, entity);
+      var obj = entity.attributes || entity;
 
-      return {
-         opacity: opacity || null,
-         backgroundImage: bg ? `url("${bg}")`
-            : bgSuffix ? `url("${toAbsoluteServerURL(bgSuffix)}")` : null,
-      };
+      if(!obj.bgStyles) {
+         var bg, styles = {};
+
+         if('bgOpacity' in item) {
+            styles.opacity = parseFieldValue(item.bgOpacity, item, entity);
+         }
+		 var state = parseFieldValue(entity.state, item, entity);
+         if(item.bg) {
+			bg = parseFieldValue(item.bg, item, entity);
+			if(item.bgoff && state === 'off'){
+				bg = parseFieldValue(item.bgoff, item, entity);;
+			}
+            
+
+            if(bg) styles.backgroundImage = 'url(' + bg + ')';
+         }
+         else if(item.bgSuffix) {
+            bg = parseFieldValue(item.bgSuffix, item, entity);
+
+            if(bg) styles.backgroundImage = 'url("' + toAbsoluteServerURL(bg) + '")';
+         }
+
+         obj.bgStyles = styles;
+      }
+
+      return obj.bgStyles;
    };
 
    $scope.itemClasses = function (item, entity) {
