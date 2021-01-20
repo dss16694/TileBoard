@@ -5,7 +5,7 @@ import { App } from '../app';
 import { TYPES, FEATURES, HEADER_ITEMS, MENU_POSITIONS, GROUP_ALIGNS, TRANSITIONS, MAPBOX_MAP, YANDEX_MAP, DEFAULT_SLIDER_OPTIONS, DEFAULT_LIGHT_SLIDER_OPTIONS, DEFAULT_VOLUME_SLIDER_OPTIONS, DEFAULT_POPUP_HISTORY, DEFAULT_POPUP_IFRAME, DEFAULT_POPUP_DOOR_ENTRY } from '../globals/constants';
 import { debounce, leadZero, supportsFeature, toAbsoluteServerURL } from '../globals/utils';
 import Noty from '../models/noty';
-
+App.controller('Main', function ($scope, $timeout, $location, Api) {
    if (!window.CONFIG) {
       return;
    }
